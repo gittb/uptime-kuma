@@ -1,37 +1,58 @@
-# .preuser/config.yml for Uptime Kuma — drafted by the /preuser:setup plugin (subagent), then
-# human-reviewed. Goals are framed as a BRAND-NEW operator because every run starts from a fresh
-# install at the "Create your admin account" gate (oddities O-6). Compose is present, so NO `up.run`.
+# .preuser/config.yml for Uptime Kuma — EXPANDED to 6 journeys (deeper coverage). Goals framed as a
+# brand-new operator (per-run fresh state, O-6: every run starts at the admin-setup gate). Compose
+# present → no up.run.
 up:
   url: http://localhost:3001
   health: /
-  ready_timeout_s: 300   # compose cold-start; >120 per the plugin's own advice
+  ready_timeout_s: 300
 
 journeys:
   - name: create-admin-account
     goal: >
-      A first-time operator opens Uptime Kuma for the first time, fills in the
-      "Create your admin account" form with a username and a password (entered
-      twice), and submits it to finish initial setup.
+      A first-time operator opens Uptime Kuma, fills in the "Create your admin account" form with a
+      username and a password (entered twice), and submits it to finish initial setup.
     success: >
-      Setup is complete and the signed-in dashboard is shown — the screen displays
-      the "Quick Stats" panel (Up / Down / Maintenance / Unknown counts) and an
-      "Add New Monitor" action, not the "Create your admin account" form.
+      Setup is complete and the signed-in dashboard is shown — the screen displays the "Quick Stats"
+      panel (Up / Down / Maintenance / Unknown counts) and an "Add New Monitor" action, not the
+      "Create your admin account" form.
 
   - name: add-first-monitor
     goal: >
-      A brand-new operator who has just installed Uptime Kuma creates their admin
-      account, then adds their first monitor for a public website by opening
-      "Add New Monitor", giving it a Friendly Name and a URL to watch, and saving.
+      A brand-new operator who has just installed Uptime Kuma creates their admin account, then adds
+      their first monitor for a public website by opening "Add New Monitor", giving it a Friendly
+      Name and a URL to watch, and saving.
     success: >
-      The monitor's detail page is shown with the Friendly Name as the heading and
-      a status badge plus Pause, Edit and Delete actions — confirming the monitor
-      was created.
+      The monitor's detail page is shown with the Friendly Name as the heading and a status badge plus
+      Pause, Edit and Delete actions — confirming the monitor was created.
+
+  - name: pause-a-monitor
+    goal: >
+      A brand-new operator sets up Uptime Kuma, adds a monitor for a public website, then pauses that
+      monitor from its detail page.
+    success: >
+      The monitor's detail page shows it is paused — the status reads "Paused" and the action toggles
+      to a "Resume" button.
+
+  - name: create-status-page
+    goal: >
+      A brand-new operator sets up Uptime Kuma, then creates a new public status page by opening
+      "Add New Status Page" and giving it a name and a URL slug.
+    success: >
+      The newly created status page is open in its editor, showing the chosen page name as the title
+      and an "Add a monitor" control.
 
   - name: switch-to-dark-theme
     goal: >
-      A brand-new operator who has just installed Uptime Kuma creates their admin
-      account, then opens Settings → Appearance and switches the interface theme
-      from Light to Dark.
+      A brand-new operator who has just installed Uptime Kuma creates their admin account, then opens
+      Settings → Appearance and switches the interface theme from Light to Dark.
     success: >
-      The Appearance settings screen shows the Theme set to "Dark" and the
-      surrounding interface rendered with a dark background.
+      The Appearance settings screen shows the Theme set to "Dark" and the surrounding interface
+      rendered with a dark background.
+
+  - name: set-display-timezone
+    goal: >
+      A brand-new operator sets up Uptime Kuma, opens the General settings, changes the "Display
+      Timezone" to a different timezone, and saves.
+    success: >
+      The General settings screen shows the "Display Timezone" selector set to the newly chosen
+      timezone and a confirmation that the settings were saved.
