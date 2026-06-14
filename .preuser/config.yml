@@ -1,0 +1,37 @@
+# .preuser/config.yml for Uptime Kuma — drafted by the /preuser:setup plugin (subagent), then
+# human-reviewed. Goals are framed as a BRAND-NEW operator because every run starts from a fresh
+# install at the "Create your admin account" gate (oddities O-6). Compose is present, so NO `up.run`.
+up:
+  url: http://localhost:3001
+  health: /
+  ready_timeout_s: 300   # compose cold-start; >120 per the plugin's own advice
+
+journeys:
+  - name: create-admin-account
+    goal: >
+      A first-time operator opens Uptime Kuma for the first time, fills in the
+      "Create your admin account" form with a username and a password (entered
+      twice), and submits it to finish initial setup.
+    success: >
+      Setup is complete and the signed-in dashboard is shown — the screen displays
+      the "Quick Stats" panel (Up / Down / Maintenance / Unknown counts) and an
+      "Add New Monitor" action, not the "Create your admin account" form.
+
+  - name: add-first-monitor
+    goal: >
+      A brand-new operator who has just installed Uptime Kuma creates their admin
+      account, then adds their first monitor for a public website by opening
+      "Add New Monitor", giving it a Friendly Name and a URL to watch, and saving.
+    success: >
+      The monitor's detail page is shown with the Friendly Name as the heading and
+      a status badge plus Pause, Edit and Delete actions — confirming the monitor
+      was created.
+
+  - name: switch-to-dark-theme
+    goal: >
+      A brand-new operator who has just installed Uptime Kuma creates their admin
+      account, then opens Settings → Appearance and switches the interface theme
+      from Light to Dark.
+    success: >
+      The Appearance settings screen shows the Theme set to "Dark" and the
+      surrounding interface rendered with a dark background.
